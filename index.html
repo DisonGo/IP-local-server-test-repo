@@ -7,19 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="node_modules\bootstrap\dist\css\bootstrap.min.css">
     <title>Document</title>
+    <style>
+        .form-select{
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <div class="row">
             <div class="col-2">
-                <h3>Table</h3>
-                <select name="Table" id="tableSel" class="form-select">
-                    <option value="u1368634_valves_of_pipeline_valv">ИП</option>
-                    <option value="u1368634_testing">Testing</option>
-                    <option value="u1368634_mybase">Кроты</option>
-                </select>
+                <div id="bases">
+                    <h3>Base</h3>
+                    <select name="Table" id="tableSel" class="form-select">
+                        <option value="u1368634_valves_of_pipeline_valv">ИП</option>
+                        <option value="u1368634_testing">Testing</option>
+                        <option value="u1368634_mybase">Кроты</option>
+                    </select>
+                </div>
+                <div id="tables">
+
+                </div>
+                <div id="columns">
+
+                </div>
             </div>
+            <table class="table table-bordered table-striped">
+                <thead id="tHead" class="thead-dark"></thead>
+                <tbody id="tBody"></tbody>
+            </table>
         </div>
     </div>
     <div id="outcome">
