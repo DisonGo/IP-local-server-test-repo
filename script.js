@@ -1,13 +1,15 @@
-let curBase = tableSel.options[tableSel.options.selectedIndex].value
-tableSel.addEventListener("change", function () {
+let curBase = baseSel.options[baseSel.options.selectedIndex].value
+let curTable = ""
+baseSel.addEventListener("change", function () {
     curBase = this.options[this.options.selectedIndex].value
     let table = getTables(curBase)
     table.then(res=>{
         tables.innerHTML = ""
         columns.innerHTML = ""
         let sel =createSelect(res)
+        sel.id = "tableSel"
         function changeEv(){
-            let curTable = sel.options[sel.options.selectedIndex].value
+            curTable = sel.options[sel.options.selectedIndex].value
             // let column = getColumns(curBase,curTable)
             // column.then(res1=>{
             //     columns.innerHTML =""
@@ -20,7 +22,14 @@ tableSel.addEventListener("change", function () {
         tables.appendChild(sel) 
         changeEv()
     })
+    refreshBut.disabled = false
 })
+refreshBut.onclick = ()=>{
+    if(curTable!=""){
+        columns.innerHTML =""
+        createTable(curTable)
+    }
+}
 function createSelect(options){
     function createOption(value){
         let nOpt = document.createElement("option")
