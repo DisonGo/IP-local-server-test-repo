@@ -144,17 +144,19 @@ async function createTable(table) {
                         {
                             value[0].shift()
                         }
-                        for (let i = 1; i < col.length; i++) {
-                            if(typeof value[i-1] != 'undefined')
-                            {
-                                showData[i - 1][colInd] = values[i - 1]
-                                showData[i - 1][colInd].unshift(refTableColumns)
-                            }else{
-                                showData[i - 1][colInd] = 'null'
-                            }
-                            
-                        }
+                        console.log(value);
                     })
+                    let buf = col.shift()
+                    for (let i = 0; i < col.length; i++) {
+                        if(typeof values[i][0] != 'undefined')
+                        {
+                            showData[i][colInd] = values[i]
+                            showData[i][colInd].unshift(refTableColumns)
+                        }else{
+                            showData[i][colInd] = 'null'
+                        }
+                    }
+                    col.unshift(buf)
                 })
             }
         }
