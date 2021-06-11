@@ -50,7 +50,20 @@ function createSelect(options) {
     });
     return nSel
 }
-
+function createFormSelect(parent,label,options) {
+    function createOption(value) {
+        let nOpt = document.createElement("option")
+        nOpt.value = value
+        nOpt.text = value
+        return nOpt
+    }
+    let nSel = document.createElement("select")
+    nSel.classList.add("form-select")
+    options.forEach(row => {
+        nSel.appendChild(createOption(row[0]))
+    });
+    return nSel
+}
 function doColumnArr(Arr, ColNames) {
     let newArr = []
     ColNames.forEach(ell => {
