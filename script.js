@@ -2,8 +2,8 @@ let curBase = baseSel.options[baseSel.options.selectedIndex].value
 let curTable = ""
 let tableContainer = document.getElementById('tablesCont')
 let elementArr = []
-baseSel.addEventListener("change", function () {
-    curBase = this.options[this.options.selectedIndex].value
+function baseChange(){
+    curBase = baseSel.options[baseSel.options.selectedIndex].value
     let table = getTables(curBase)
     table.then(res => {
         tables.innerHTML = ""
@@ -26,7 +26,9 @@ baseSel.addEventListener("change", function () {
         changeEv()
     })
     refreshBut.disabled = false
-})
+}
+baseSel.addEventListener("change", baseChange)
+baseChange()
 refreshBut.onclick = () => {
     if (curTable != "") {
         columns.innerHTML = ""
