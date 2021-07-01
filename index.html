@@ -6,59 +6,97 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="node_modules\bootstrap\dist\css\bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+    <script src="velocity.min.js"></script>
     <title>Document</title>
     <style>
-        .form-select{
-            margin-bottom: 5px;
-        }
-        .tdTable{
-            padding: 0 !important;
-        }
-        .table{
-            margin-bottom: 0;
-        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-2">
-                <div id="bases">
-                    <h3>Base</h3>
-                    <select name="Table" id="baseSel" class="form-select">
-                        <option value="u1368634_valves_of_pipeline_valv" selected>ИП</option>
-                        <!-- <option value="u1368634_testing">Testing</option>
-                        <option value="u1368634_mybase">Кроты</option> -->
-                    </select>
-                    <button id="refreshBut" class=".d-inliner-flex" disabled>Refresh</button>
-                </div>
-                <div id="tables">
-
-                </div>
-                <div id="columns">
-
-                </div>
-                <form action="" method="get" id="mainForm">
-                    <div class="form-group" id="type">
-                        
+    <div id="enter" class="module">
+        <div class="outerContainer my_container">
+            <div class="innerContainer my_container">
+                <div id="enterPage1">
+                    <div class="row">
+                        <h2 class="centered" style="width: auto;">Добро пожаловать</h2>
+                        <p>Войти как:</p>
                     </div>
-                    <div class="form-group" id="marks">
-                        
+                    <div class="row">
+                        <div class="col">
+                            <button class="enterBut" id="guestBut">Гость</button>
+                        </div>
+                        <div class="col">
+                            <button class="enterBut" id="adminBut">Админ</button>
+                        </div>
                     </div>
-                    <div class="form-group" id="technical">
-                        
+                </div>
+                <div id="enterPage2" style="display: none; opacity: 0;">
+                    <div class="row">
+                        <div class="col">
+                            <h3>Войти:</h3>
+                            <label for="password">Пароль</label> <br>
+                            <input class="mt-1" type="password" name="password" id="password"><br>
+                            <button class="btn btn-primary mt-2" onclick="adminEnter()">Войти</button>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="" id="tablesCont"></div>
         </div>
     </div>
-    <div id="outcome">
+    <div id="userBlock" class="hidden">
+        <div class="container">
+            <div class="row">
+                <div class="col-5">
+                    <form action="" id="mainForm" name="searchForm">
+                        <div class="form-group" id="type">
+                            <h3>Тип клапана</h3>
+                        </div>
+                        <div class="form-group" id="marks">
+                            <h3>Марка клапана</h3>
+
+                        </div>
+                        <div class="form-group" id="technical">
+                            <h3>Технические характеристики клапана</h3>
+
+                        </div>
+                    </form>
+                    <button class="btn btn-primary" onclick="search()">Поиск</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="adminBlock" class="hidden">
+        <div class="container">
+            <div class="row mt-2">
+                <div class="col-2">
+                    <div id="bases">
+                        <h3>Base</h3>
+                        <select name="Table" id="baseSel" class="form-select">
+                            <option value="u1368634_valves_of_pipeline_valv" selected>ИП</option>
+                            <!-- <option value="u1368634_testing">Testing</option>
+                            <option value="u1368634_mybase">Кроты</option> -->
+                        </select>
+                    </div>
+                    <div id="tables">
+
+                    </div>
+                    <button id="refreshBut" class=".d-inliner-flex btn btn-primary" disabled>Refresh</button>
+                    <div id="columns">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-2">
+                <div class="" id="tablesCont"></div>
+            </div>
+        </div>
 
     </div>
     <script src="script.js"></script>
     <script src="node_modules\bootstrap\dist\js\bootstrap.min.js"></script>
+
 </body>
 
 </html>

@@ -1,7 +1,14 @@
+
 let curBase = baseSel.options[baseSel.options.selectedIndex].value
 let curTable = ""
 let tableContainer = document.getElementById('tablesCont')
 let elementArr = []
+function loadUserPage(){
+    
+}
+function loadAdminPage(){
+
+}
 function baseChange(){
     curBase = baseSel.options[baseSel.options.selectedIndex].value
     let table = getTables(curBase)
@@ -35,14 +42,59 @@ refreshBut.onclick = () => {
         createTable(curTable)
     }
 }
-
-function createSelect(options) {
-    function createOption(value) {
-        let nOpt = document.createElement("option")
-        nOpt.value = value
-        nOpt.text = value
-        return nOpt
+function hideModule(){
+    enter.velocity({
+        opacity: 0
+    }, {
+        duration: 200
+    }).velocity({
+        display: "none"
+    })
+}
+guestBut.addEventListener("click",function(){
+    userBlock.classList.remove("hidden")
+    hideModule()
+})
+adminBut.addEventListener("click",function(){
+    enterPage1.velocity({
+        opacity: 0
+    }, {
+        duration: 200
+    }).velocity({
+        display: "none",
+    },
+    {
+        complete: function() { 
+            enterPage2.velocity({
+                display: "block"
+            }).velocity({
+                opacity: [1, 0],
+        
+            }, {
+                duration: 200
+            })
+        }
+    })
+    if(false){
+        enter.velocity({
+            opacity: 0
+        }, {
+            duration: 300
+        }).velocity({
+            display: "none"
+        })
     }
+})
+const adminPass = "12345"
+function adminEnter(){
+    let pass = password.value
+    if(pass == adminPass)
+    {
+        adminBlock.classList.remove("hidden")
+        hideModule()
+    }
+}
+function createSelect(options) {
     let nSel = document.createElement("select")
     nSel.classList.add("form-select")
     options.forEach(row => {
@@ -50,19 +102,62 @@ function createSelect(options) {
     });
     return nSel
 }
-function createFormSelect(parent,label,options) {
-    function createOption(value) {
-        let nOpt = document.createElement("option")
-        nOpt.value = value
-        nOpt.text = value
-        return nOpt
-    }
+async function createForm(){
+    let type = document.getElementById('type')
+    let marks = document.getElementById('marks')
+    let technical = document.getElementById('technical')
+    
+    let typeCols = await getColumns(curBase,`Типы клапанов (вентелей)`)
+    let marksCols = await getColumns(curBase,`Марки`)
+    let technicalCols = await getColumns(curBase,`Технические характеристики`)
+
+    let typeData = getAllTableData(curBase,`Типы клапанов (вентелей)`)
+    let marksData = getAllTableData(curBase,`Марки`)
+    let technicalData = getAllTableData(curBase,`Технические характеристики`)
+
+    await Promise.all([typeData,marksData,technicalData]).then(results =>{
+        typeData = doColumnArr(results[0],typeCols)
+        marksData = doColumnArr(results[1],marksCols)
+        technicalData = doColumnArr(results[2],technicalCols)
+        console.log("typeData",typeData);
+        console.log("marksData",marksData);
+        console.log("technicalData",technicalData);
+        createFormSelect(type,{text:'Тип клапана',for:'tipKlapana'},typeData, typeData[0][0])
+        createFormSelect(marks,{text:'Марка',for:'marka'},marksData, marksData[1][0])
+        createFormSelect(technical,{text:'Давление номинальное',for:'techCharP'},technicalData, technicalData[1][0])
+        createFormSelect(technical,{text:'Диаметр номинальный',for:'techCharD'},technicalData, technicalData[2][0])
+        createFormSelect(technical,{text:'Присоединение к трубопроводу',for:'techCharC'},technicalData, technicalData[3][0])
+        createFormSelect(technical,{text:'Тип привода',for:'techCharT'},technicalData, technicalData[4][0])
+    })
+}
+createForm()
+function createLabel(text,forId){
+    let nLbl = document.createElement("label")
+    nLbl.for = forId
+    nLbl.innerHTML = text
+    return nLbl
+}
+function createOption(value) {
+    let nOpt = document.createElement("option")
+    nOpt.value = value
+    nOpt.text = value
+    return nOpt
+}
+function createFormSelect(parent,label,options,column) {
     let nSel = document.createElement("select")
     nSel.classList.add("form-select")
+    nSel.id = label.for
+    nSel.appendChild(createOption("Нет"))
     options.forEach(row => {
-        nSel.appendChild(createOption(row[0]))
+        row = [...new Set(row)]
+        if(row[0]==column){
+            for(let i = 1;i<row.length;i++){
+                nSel.appendChild(createOption(row[i]))
+            }
+        }
     });
-    return nSel
+    parent.appendChild(createLabel(label.text,label.for))
+    parent.appendChild(nSel)
 }
 function doColumnArr(Arr, ColNames) {
     let newArr = []
@@ -143,7 +238,7 @@ async function createTable(table) {
         let refTableColumns = await getColumns(curBase, key.refTable).then(res => {
             return res
         })
-        refTableColumns.shift()
+        if(refTableColumns[0][0]=='ID')refTableColumns.shift()
         refTableColumns.forEach(col => {
             col.splice(1)
         })
@@ -155,7 +250,7 @@ async function createTable(table) {
                 }
                 await Promise.all(rows).then(values => {
                     values.forEach(value => {
-                        if(typeof value[0] != 'undefined')
+                        if(typeof value[0] != 'undefined'&& /^\d+$/.test(value[0][0]))
                         {
                             value[0].shift()
                         }
